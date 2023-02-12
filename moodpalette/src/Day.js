@@ -1,13 +1,12 @@
-import logo from './logo.svg';
-import './App.css';
-import Day from './Day.js';
+import React from "react";
 import { Row, Card, Button } from "react-bootstrap";
 
-
-function App() {
-  return (
-    <div className="App">
-      <Row>
+function Day() {
+    console.log("hi");
+    return (
+    <div className="Day">
+        <Button onClick={handleClick}>button</Button>
+        {/* <Row>
         <div onClick={handleClick}>
             <Card style={{ width: '18rem', cursor : 'pointer' }} >
             <Card.Img variant="top" src="holder.js/100px180" />
@@ -21,13 +20,13 @@ function App() {
             </Card.Body>
             </Card>
         </div>
-        </Row>
+        </Row> */}
     </div>
-  );
+    );
 }
 
 function handleClick() {
-  console.log("Clicked!");
+    console.log("Clicked!");
 }
 
-export default App;
+export default Day;

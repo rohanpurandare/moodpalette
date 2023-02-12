@@ -11,3 +11,23 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.heatmap-display {
+  padding: 50px;
+}
+
+.react-calendar-heatmap .color-scale-1 { 
+    fill: #d0ffc6; 
+}
+.react-calendar-heatmap .color-scale-2 { 
+    fill: #acff99; 
+}
+.react-calendar-heatmap .color-scale-3 { 
+    fill: #8bff71; 
+}
+.react-calendar-heatmap .color-scale-4 { 
+    fill: #68ff46; 
+}
+.react-calendar-heatmap .color-scale-5 { 
+    fill: #2fff00; 
+}
