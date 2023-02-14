@@ -1,70 +1,3 @@
-// import React from 'react';
-// import './index.css'
-// import CalHeatmap from 'cal-heatmap';
-
-// export default class App extends CalHeatmap{
-//     const cal: CalHeatmap = new CalHeatmap();
-//     cal.paint(
-//     {
-//         data: {
-//         source: '../fixtures/seattle-weather.csv',
-//         type: 'csv',
-//         x: 'date',
-//         y: 'wind',
-//         groupY: 'max',
-//         },
-//         date: { start: new Date('2012-01-01') },
-//         range: 8,
-//         scale: { type: 'linear', scheme: 'Oranges', domain: [0, 8] },
-//         domain: {
-//         type: 'month',
-//         },
-//         subDomain: { type: 'day', radius: 2 },
-//         itemSelector: '#ex-wind',
-//     },
-//     [
-//         [
-//         Tooltip,
-//         {
-//             text: function (date, value, dayjsDate) {
-//             return (
-//                 (value ? value + 'km/h' : 'No data') +
-//                 ' on ' +
-//                 dayjsDate.format('LL')
-//             );
-//             },
-//         },
-//         ],
-//     ]
-//     );
-
-//     render(
-//     <div>
-//         <div id="ex-wind"></div>
-//         <a
-//         className="button button--sm button--secondary"
-//         href="#"
-//         onClick={e => {
-//             e.preventDefault();
-//             cal.previous();
-//         }}
-//         >
-//         ← Previous
-//         </a>
-//         <a
-//         className="button button--sm button--secondary margin-left--xs"
-//         href="#"
-//         onClick={e => {
-//             e.preventDefault();
-//             cal.next();
-//         }}
-//         >
-//         Next →
-//         </a>
-//     </div>
-//     );
-// }
-
 import React from 'react';
 import './index.css'
 // Import the calendarheatmap
@@ -109,19 +42,27 @@ export default class App extends React.Component {
 
     render() {
         return (
-            <div style={{width: 730}}>
+            <div style={{width: 1000}}>
                 <CalendarHeatmap
                     startDate={new Date('2022-12-31')}
                     endDate={new Date('2024-01-01')}
                     numDays={this.state.numDays}
                     values={this.state.values}
+                    onClick={this.onClick}
+                    onMouseOver={(event, value) => {
+                        if (!value) {
+                            console.log('0% of habits completed');
+                        }
+                        else {
+                            console.log(((value.count - 1)*20 + 1) + "-" + value.count*20 + "% of habits completed")}
+                        }}
                     classForValue={(value) => {
                         if (!value) {
                           return 'color-empty';
                         }
                         return `color-scale-${value.count}`;
                       }}
-                    onClick={this.onClick}
+                    
                 />
             </div>
         );
