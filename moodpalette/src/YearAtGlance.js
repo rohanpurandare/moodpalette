@@ -1,50 +1,34 @@
-import React from 'react';
-import './index.css'
-// Import the calendarheatmap
-import CalendarHeatmap from 'react-calendar-heatmap';
+import { useEffect, useRef } from "react";
 
-export default class App extends React.Component {
-
-    constructor(props, context) {
-        super(props, context);
-        
-        this.state = {
-            // Some dates to render in the heatmap
-            values: [
-                { date: '2023-01-01' },
-                { date: '2023-01-15' },
-                { date: '2023-01-04' },
-                { date: '2023-01-21' },
-                { date: '2023-01-30' },
-                { date: '2023-01-06' },
-                { date: '2023-01-08' }
-            ],
-            // How many days should be shown
-            numDays: 366,
-            weekdayLabels: true
-        }
-
-        this.onClick = this.onClick.bind(this);
-        this.state.values[3].style = {fill: 'blue'};
-    }
- 
-    onClick(value) {
-        console.log(value);
-    }
-
-    render() {
-        return (
-            <div style={{width: 800}}>
-                <CalendarHeatmap
-                    startDate={new Date('2022-12-31')}
-                    endDate={new Date('2024-01-01')}
-                    numDays={this.state.numDays}
-                    values={this.state.values}
-                    weekdayLabels={this.state.weekdayLabels}
-                    classForValue={(value) => ''}
-                    onClick={this.onClick}
-                />
-            </div>
-        );
-    }
-}
+function App() {
+    const canvasRef = useRef();
+  
+    const drawRectangle = () => {
+      const context = canvasRef.current.getContext("2d");
+      for (let i = 0; i < 365; i++) {
+        var n = (Math.random() * 0xfffff * 1000000).toString(16);
+        context.strokeStyle = "#" + n.slice(0, 6);;
+        context.lineWidth = 2;
+        context.strokeRect(i*2, 0, 2, 45);
+      }
+    };
+  
+    useEffect(() => {
+      drawRectangle();
+    }, []);
+  
+    return (
+  <div>
+    <canvas
+      ref={canvasRef}
+      style={{
+        width: "730px",
+        height: "400px",
+        background: "url('./bg-img.jpg')",
+      }}
+    />
+  </div>
+    );
+  }
+  
+  export default App;
