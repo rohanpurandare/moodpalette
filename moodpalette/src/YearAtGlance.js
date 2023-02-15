@@ -13,7 +13,6 @@ function App() {
                 if (validDays[j][i] === null) {
                     n = (0xffffff).toString(16);
                 }
-                console.log(n)
                 context.fillStyle = "#" + n.slice(0, 6);
                 context.fillRect(j*25, i*25, 24, 24);
             }
@@ -28,7 +27,7 @@ function App() {
         <div>
             <canvas
             ref={canvasRef}
-            height={400}
+            height={200}
             width={1500}
             />
         </div>

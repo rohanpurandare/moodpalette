@@ -16,9 +16,10 @@ root.render(
       <Heatmap></Heatmap>
       <h2>Year at a glance:</h2>
       <YearAtGlance></YearAtGlance>
+      <Calendar></Calendar>
     </div>
     <div>
-      <Calendar></Calendar>
+      
     </div>
   </React.StrictMode>
 );
