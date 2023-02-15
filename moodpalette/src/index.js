@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import Day from './Day';
 import Heatmap from './Heatmap'
 import YearAtGlance from './YearAtGlance'
+import Calendar from './calendar'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,6 +16,9 @@ root.render(
       <Heatmap></Heatmap>
       <h2>Year at a glance:</h2>
       <YearAtGlance></YearAtGlance>
+    </div>
+    <div>
+      <Calendar></Calendar>
     </div>
   </React.StrictMode>
 );
