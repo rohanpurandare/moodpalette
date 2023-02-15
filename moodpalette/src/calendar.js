@@ -42,16 +42,43 @@ return (
         //tileContent prop takes a function that returns a date button to be rendered in each date tile
         tileContent={({ date, view }) => {
           // check if the date is in the future
+          const monthNames = ["January", "February", "March", "April", "May", "June",
+          "July", "August", "September", "October", "November", "December"
+          ];
+          let decadeStart = ((date.getFullYear() / 10).toFixed(0) * 10) + 1;
+          let decadeEnd = decadeStart + 9;
           if (date > new Date()) {
             return null;
           }
-        
-          return (
-            <button onClick={() => handleDateClick(date)}>
-              {date.getDate()}
-            </button>
-        
-          );
+          if (view === 'month'){
+            return (
+              <button onClick={() => handleDateClick(date)}>
+                {date.getDate()}
+              </button>
+          
+            );
+          }
+          else if (view === 'year') {
+            return(
+              <button>
+                {monthNames[date.getMonth()]}
+              </button>
+            )
+          }
+          else if (view === 'decade') {
+            return(
+              <button>
+                {date.getFullYear()}
+              </button>
+            )
+          }
+          else {
+            return(
+              <button>
+                {decadeStart} - {decadeEnd}
+              </button>
+            )
+          }
         }}
         />
    </div>
