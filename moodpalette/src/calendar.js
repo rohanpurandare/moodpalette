@@ -7,6 +7,7 @@ import 'reactjs-popup/dist/index.css';
 import './calendar.css';
 
 function App() {
+ //to trak selected date
  const [date, setDate] = useState(new Date())
  //to specify popups for specific dates
  const [open, setOpen] = useState(false)
@@ -14,6 +15,7 @@ function App() {
  //to save text within the textbox
  const [text, setText] = useState("");
 
+ //to specify popups
  const handleDateClick = (clickedDate) => {
   if (clickedDate.toDateString() === new Date().toDateString()) {
     setOpen(true);
@@ -31,9 +33,12 @@ return (
      <Calendar 
         onChange={setDate} 
         value={date}
-        
+
+        //minDate={new Date(date.getFullYear() - 10, 0, 1)}
+        //maxDate={new Date(date.getFullYear() + 10, 11, 31)}
+      
         tileClassName={({date, view}) => {
-          if (date <= new Date()) {
+          if (view === 'month' && date <= new Date()) {
             return "react-calendar__tile--prev";
           }
         }}
@@ -42,11 +47,12 @@ return (
         //tileContent prop takes a function that returns a date button to be rendered in each date tile
         tileContent={({ date, view }) => {
           // check if the date is in the future
-          const monthNames = ["January", "February", "March", "April", "May", "June",
-          "July", "August", "September", "October", "November", "December"
-          ];
-          let decadeStart = ((date.getFullYear() / 10).toFixed(0) * 10) + 1;
-          let decadeEnd = decadeStart + 9;
+          //const monthNames = ["January", "February", "March", "April", "May", "June",
+          //"July", "August", "September", "October", "November", "December"];
+          
+          //let decadeStart = ((date.getFullYear() / 10).toFixed(0) * 10) + 1;
+          //let decadeEnd = decadeStart + 9;
+
           if (date > new Date()) {
             return null;
           }
@@ -58,13 +64,13 @@ return (
           
             );
           }
+          /*
           else if (view === 'year') {
             return(
-              <button>
-                {monthNames[date.getMonth()]}
-              </button>
+              <div>
+              </div>
             )
-          }
+            }
           else if (view === 'decade') {
             return(
               <button>
@@ -78,7 +84,7 @@ return (
                 {decadeStart} - {decadeEnd}
               </button>
             )
-          }
+          }*/
         }}
         />
    </div>
