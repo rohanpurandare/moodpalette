@@ -5,6 +5,7 @@ import React from 'react';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import './calendar.css';
+import {Slider } from '@mui/material';
 
 function App() {
  //to trak selected date
@@ -25,6 +26,15 @@ function App() {
     setDate(clickedDate);
   }
 };
+
+const marks = [
+  { value: 10, label: '10' },
+  { value: 20, label: '20' },
+  { value: 30, label: '30' },
+  { value: 40, label: '40' },
+  { value: 50, label: '50' },
+  { value: 100, label: '100' },
+];
 
 return (
  <div className="app">
@@ -94,6 +104,15 @@ return (
             <h2>{date.toDateString()}</h2>
             <p>Color of the day: </p>
             <p>Vibe Meter: </p>
+            <Slider
+                  aria-label="Restricted values"
+                  defaultValue={20}
+                  step={null}
+                  valueLabelDisplay="auto"
+                  marks={marks}
+                  max={50}
+                  min={0}
+              />
             <p>Thought Log: </p>
             <textarea rows="4" cols="40" value={text} onChange={(event) => setText(event.target.value)}></textarea>
             <div style={{ width: "100%", textAlign: "center" }}>
