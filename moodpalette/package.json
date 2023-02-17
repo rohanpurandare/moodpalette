@@ -5,16 +5,23 @@
   "dependencies": {
     "@babel/core": "^7.20.12",
     "@babel/preset-env": "^7.20.2",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/material": "^5.11.9",
     "@syncfusion/ej2-react-heatmap": "^20.4.48",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "cal-heatmap": "^4.0.0-beta.5",
+    "framer-motion": "^9.0.4",
     "react": "^18.2.0",
     "react-bootstrap-validation": "^0.1.11",
+    "react-calendar": "^4.0.0",
     "react-dom": "^18.2.0",
+    "react-responsive": "^9.0.2",
     "react-scripts": "5.0.1",
     "reactjs-popup": "^2.0.5",
+    "styled-components": "^5.3.6",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
