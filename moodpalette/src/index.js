@@ -7,10 +7,12 @@ import Day from './Day';
 import Heatmap from './Heatmap'
 import YearAtGlance from './YearAtGlance'
 import Calendar from './calendar'
+import NavBar from './navbar';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <NavBar></NavBar>
     <div class='heatmap-display'>
       <h2>Habit Tracker Heat Map:</h2>
       <Heatmap></Heatmap>
