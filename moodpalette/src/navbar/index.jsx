@@ -49,8 +49,6 @@ const MobileNavContainer = styled.div`
 `;
 
 const LinksWrapper = styled.ul`
-  margin: 0;
-  padding: 0;
   display: flex;
   height: 100%;
   list-style: none;
@@ -65,10 +63,15 @@ const LinkItem = styled.li`
   width: 100%;
   padding: 0 1.1em;
   color: #222;
-  font-weight: 500;
-  font-size: 16px;
+  font-weight: 400;
+  font-size: 18px;
   display: flex;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  transition: all 220ms ease-in-out;
+
+  &:hover {
+    font-weight: 700;
+  }
 `;
 
 const Link = styled.a`
@@ -88,7 +91,7 @@ const DeviceSize = {
 };
 
 export default function NavBar(props) {
-    const isMobile = useMediaQuery({maxWidth: DeviceSize.mobile});
+    const isMobile = useMediaQuery({maxWidth: DeviceSize.tablet});
     const [isOpen, setOpen] = useState(false);
     return <NavBarOuterContainer>
         <NavBarContainer>
@@ -111,7 +114,6 @@ export default function NavBar(props) {
                     <LinkItem><Link href="#">Habit Tracker</Link></LinkItem>
                     <LinkItem><Link href="#">Moo Pal Shop</Link></LinkItem>
                     <LinkItem><Link href="#">Account</Link></LinkItem>
-                    <Marginer />
                     <Accessibility />
                 </LinksWrapper>}
         </MobileNavContainer>}

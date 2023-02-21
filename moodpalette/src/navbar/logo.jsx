@@ -7,9 +7,11 @@ const LogoWrapper = styled.div`
   align-items: center;
 `;
 
-const LogoImg = styled.div`
+const LogoImg = styled.button`
   width: 90px;
   height: 90px;
+  border: none;
+  background: none;
 
   img {
     width: 100%;
@@ -31,7 +33,7 @@ export default function Logo(props) {
       <LogoImg>
         <img src={MooPalImg} alt="Moo Pal Logo" />
       </LogoImg>
-      <LogoText>Moo Pal</LogoText>
+      <LogoText>Mood Palette</LogoText>
     </LogoWrapper>
   );
 }
