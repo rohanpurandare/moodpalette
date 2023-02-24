@@ -29,7 +29,7 @@ export default function Home() {
 
     return (
         
-        <div style="text-align:center">
+        <div>
             Welcome {user.username}!
             <br/>
             <button onClick={notify}>Notify!</button>
