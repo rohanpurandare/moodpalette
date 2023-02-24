@@ -1,0 +1,61 @@
+.email 
+{
+    width: 100vw;
+    height: 100vh;
+    background-color:antiquewhite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  
+  .emailWrapper 
+  {
+    width: 70%;
+    height: 70%;
+    display: flex;
+  }
+
+  .emailDesc {
+    font-size: 24px;
+  }
+
+  .contact-form, .notify{
+    height: 300px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.from_checkbox,
+.from_time,
+.from_email,
+.from_name
+{
+    height: 50px;
+    border-radius: 10px;
+    border: 1px solid gray;
+    font-size: 18px;
+    padding-left: 20px;
+}
+
+.submit, .notify{
+    height: 50px;
+    border-radius: 10px;
+    border: none;
+    background-color: cornflowerblue;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.from_checkbox:focus,
+.from_time:focus,
+.from_email:focus,
+.from_name:focus{
+    outline: none;
+}

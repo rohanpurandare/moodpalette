@@ -1,5 +1,6 @@
 //HOME PAGE FRONTEND CODE
-import { React, useContext } from "react";
+import { React, useContext, useRef } from "react";
+
 import { AuthContext } from "../../context/AuthContext";
 import "./home.css"
 
@@ -14,6 +15,7 @@ const notify = () => {
 
 export default function Home() {
 
+    const form = useRef();
     function sendEmail(e) {
         e.preventDefault();    //This is important, i'm not sure why, but the email won't send without it
     
@@ -29,27 +31,35 @@ export default function Home() {
 
     return (
         
-        <div style="text-align:center">
-            Welcome {user.username}!
+        <div className="email">
+            <div classname="emailWrapper">
+            <span className="loginDesc">
+            Subscribe to email notifications!
+          </span>
             <br/>
-            <button onClick={notify}>Notify!</button>
+            <div className="emailRight">
             <form className="contact-form" onSubmit={sendEmail}>
                 <input type="hidden" name="contact_number" />
                 <label>Name</label>
-                <input type="text" name="from_name" />
+                <input className="from_name" type="text" name="from_name" />
                 <br/>
                 <label>Email</label>
-                <input type="email" name="from_email" />
+                <input className="from_email" type="email" name="from_email" />
                 <br/>
                 <label>Time</label>
-                <input type="time" name="from_time" />
+                <input className="from_time" type="time" name="from_time" />
                 <br/>
                 <label>Subscribe</label>
-                <input type="checkbox" name="from_checkbox"/>
+                <input  type="checkbox" name="from_checkbox"/>
                 <br/>
-                <input type="submit" value="Send" />
+                <input className="submit" type="submit" value="Send" />
+
                 </form>
+                <button className="notify" onClick={notify}>Notify!</button>
+
+            </div>
             <ToastContainer/>
+            </div>
         </div>
         
 
