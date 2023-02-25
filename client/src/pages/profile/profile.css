@@ -1,0 +1,167 @@
+.profile {
+	display: flex;
+    justify-content: center;
+   
+}
+
+.profileUserImg {
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	object-fit: cover;
+    flex: auto;
+    margin-top: 10px;
+	border: 3px solid antiquewhite;
+}
+
+.profileInfoName {
+	font-size: 24px;
+	margin: 1rem;
+}
+
+.profileInfoDesc {
+	font-weight: 300;
+	margin: 0.5rem;
+}
+
+.blueBtnEdit {
+    height: 50px;
+    border-radius: 10px;
+    border: none;
+    background-color: cornflowerblue;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    margin:10px;
+}
+
+.greenBtnCancel {
+    height: 50px;
+    border-radius: 10px;
+    border: none;
+    background-color: darkseagreen;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+
+}
+
+.blueBtnFinal{
+    height: 50px;
+    border-radius: 10px;
+    border: none;
+    background-color: cornflowerblue;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.greenBtnChoose{
+    height: 50px;
+    border-radius: 10px;
+    border: none;
+    background-color: darkseagreen;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    margin:10px
+}
+
+.entireProfile {
+    display: flex;
+	flex-direction: column;
+    align-items: center; /*aligns the contents inside the div*/
+    border: 2px solid black;
+    border-radius: 10%;
+    width:fit-content;
+    justify-content: center;
+    margin-left: 40%;
+    margin-top: 10%;
+}
+
+.email 
+{
+    width: 100vw;
+    height: 100vh;
+    background-color:rgb(255, 255, 255);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  
+  .emailWrapper 
+  {
+    width: 70%;
+    height: 70%;
+    display: flex;
+  }
+
+  .emailDesc {
+    font-size: 24px;
+  }
+
+  .contact-form, .notify{
+    height: 300px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.notify {
+    width: 250px;
+    height: 50px;
+    margin: 0 auto;
+    padding: 0;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.from_checkbox,
+.from_time,
+.from_email,
+.from_name
+{
+    height: 50px;
+    border-radius: 10px;
+    border: 1px solid gray;
+    font-size: 18px;
+    padding-left: 20px;
+}
+
+.from_time
+{
+    height: 80px;
+    border-radius: 10px;
+    border: 1px solid gray;
+    font-size: 18px;
+    padding-left: 20px;
+    display: inline-block;
+
+}
+
+
+.submit, .notify{
+    height: 50px;
+    border-radius: 10px;
+    border: none;
+    background-color: cornflowerblue;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.from_checkbox:focus,
+.from_time:focus,
+.from_email:focus,
+.from_name:focus{
+    outline: none;
+}

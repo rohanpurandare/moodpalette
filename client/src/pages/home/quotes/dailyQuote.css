@@ -1,0 +1,12 @@
+.quoteDiv {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.quoteHeader {
+    font-size: 20px;  
+}
+
+.authorParagraph {
+    text-align: right;
+}
