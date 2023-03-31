@@ -7,6 +7,7 @@ const morgan = require("morgan");
 const userRoute = require("./routes/users");
 const authRoute = require("./routes/auth");
 const dayRoute = require("./routes/day");
+const spotifyRoute = require("./routes/spotify");
 
 dotenv.config();
 mongoose.set("strictQuery", false); // got a deprecation warning,, set default to false? could be true...
@@ -28,6 +29,7 @@ app.use(morgan("common"));
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/day",dayRoute)
+app.use("/api/spotify", spotifyRoute);
 
 app.listen(8800, () => {
   console.log("Backend server is running!");
