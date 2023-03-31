@@ -1,23 +1,30 @@
-import {useState} from 'react';
 import Calendar from 'react-calendar'; 
 import 'react-calendar/dist/Calendar.css'
 import React from 'react';
 import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
 import './calendar.css';
 import {Slider } from '@mui/material';
-import { useContext } from "react";
 import { AuthContext } from "../../../context/AuthContext";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import { ChromePicker } from 'react-color'
 import axios from "axios";
+import "reactjs-popup/dist/index.css";
+import SpotifyWebApi from 'spotify-web-api-js';
+import { useContext, useState } from "react";
 
 
 function App() {
 //userContext for storing/accessing user specific data 
 // use the auth context to get this user //from AuthContext.js
-const {user} = useContext(AuthContext)
+
+const spotifyApi = new SpotifyWebApi();
+
+const [currRec, setCurrRec] = useState("");
+const { user } = useContext(AuthContext);
+console.log(user)
+//const {date} = useState();
+
  //to track selected date
  const [date, setDate] = useState(new Date())
  //to specify popups for specific dates
@@ -33,16 +40,69 @@ const {user} = useContext(AuthContext)
  const [emotion, setEmotion] = useState("");
  //to save text within the textbox- for journal
  const [journal, setText] = useState("");
+ //to store the retrieved data
+ const [userData, setUserData] = useState({
+  username: "",
+  date: "",
+  color: "",
+  vibe: 0,
+  journal: "",
+  emotion: ""
+ })
+ 
 
- //to save data for API request
-//  const [apiData, setApiData] = useState({
-//   username: "",
-//   date: "",
-//   color: "",
-//   vibe: 0,
-//   journal: "",
-//   emotion: "",
-// });
+const getUserData = async (e) => {
+  console.log("DATE:", date.toDateString());
+  const res = await axios.get(`day/getDailyData/${user.username}/${date.toDateString()}`)
+  const latestres = res.data[res.data.length - 1];
+  console.log("latestres:", latestres);
+  if (typeof latestres !== 'undefined') {
+    setUserData({username: user.username, date: date.toDateString(), color: latestres.color, vibe: latestres.vibe, journal: latestres.journal, emotion: latestres.emotion});
+  }
+  else {
+    setUserData({username: user.username, date: date.toDateString(), color: "", vibe: 25, journal: "", emotion: ""});
+  }
+  return userData;
+};
+
+const getRecs = async () => {
+  const res = await axios.get("/spotify/fetchAccessToken", {})
+  const resTwo = await axios.get(`day/getDailyData/${user.username}/${date.toDateString()}`)
+    const latestres = resTwo.data[resTwo.data.length - 1];
+  .then((res) => {
+    
+    spotifyApi.setAccessToken(res.data.accessToken);
+    
+    return spotifyApi.getRecommendations({
+      limit:5,
+      market:"ES",
+      seed_artists:"4NHQUGzhtTLFvgF5SZesLK",
+      seed_genres:"rock,pop,classical",
+      seed_tracks:"0c6xIDDpzE81m2q797ordA",
+      target_danceability:.5,
+    }).then((response) => {
+        console.log("THIS IS MY REC:FUCK", response)
+        setCurrRec({
+          name: response.tracks[0].name,
+          albumArt: response.tracks[0].album.images[0].url,
+          artist: response.tracks[0].artists[0].name,
+          url: response.tracks[0].external_urls.spotify
+        }) 
+        /*
+        try {
+          console.log(getUserData());
+          axios.put(`/days/addSong/${userData.date}/${user.username}`, currRec.url);
+        } catch (err) {
+          console.log(err);
+        }
+        */
+    });
+  })
+  .catch((error) => {
+      console.log(error);
+  });
+}
+
 
 // to handle submission of data to the backend API
 const handleSubmit = async (e) => {
@@ -85,8 +145,8 @@ const handleSubmit = async (e) => {
     setOpen(true);
     setDate(clickedDate);
   } else if (clickedDate < new Date()) {
-    setOpenPast(true);
     setDate(clickedDate);
+    setOpenPast(true);
   }
 
   // set apiData with the data you want to send to the API
@@ -138,9 +198,7 @@ return (
         }}
         />
    </div>
-   <div className="popup-container">
         <Popup open={open} closeOnDocumentClick onClose={() => setOpen(false)}>
-          <div className="popup-content">
             <h2>{date.toDateString()}</h2><br />
             <p>Color of the day: </p><br />
             <center>
@@ -158,28 +216,24 @@ return (
                   onChange={(value) => {setVibe(value.target.value)}}
               />
             <p>Thought Log: </p>
-            <textarea rows="4" cols="50" value={journal} onChange={(event) => setText(event.target.value)}></textarea>
+            <textarea rows="4" cols="104" value={journal} onChange={(event) => setText(event.target.value)}></textarea>
             <div style={{ width: "100%", textAlign: "center" }}>
-                <button style={{ display: "block", marginTop: "20px" }} onClick={() => {
+                <button style={{ display: "block", marginTop: "20px", float: "right" }} onClick={() => {
                   setOpen(false);
                   setOpenExtra(true);
                 }}>Next</button>
             </div>
-          </div>
         </Popup>
-      </div>
-   <div className="popup-container2">
-        <Popup open={openPast} closeOnDocumentClick onClose={() => setOpenPast(false)}>
-          <div className="popup-content">
-          <h2>Past Date Popup</h2>
-            <p>The selected past date is: {date.toDateString()}</p>
+        <Popup open={openPast} closeOnDocumentClick onClose={() => setOpenPast(false)} onOpen={(e) => getUserData(e)}>
+          <h2>Past Date Popup: {date.toDateString()}</h2><br />
+          <p>Vibe Meter: {userData.vibe} </p>
+          <p>Journal: {userData.journal} </p>
+          <p>Emotion: {userData.emotion} </p>
+
             <button onClick={() => setOpenPast(false)}>Close</button>
-          </div>
+          
         </Popup>
-      </div>
-      <div className="popup-container3">
         <Popup open={openExtra} closeOnDocumentClick onClose={() => setOpenExtra(false)}>
-          <div className="popup-content">
           <h2>Select your mood</h2>
           <br />
             <Container fluid="md">
@@ -203,8 +257,8 @@ return (
                 </Row>
                 <Row>
                     <button class = "emoji-button" onClick={() => setEmotion("Loving")}>🥰</button>
-                    <button class = "emoji-button" onClick={() => setEmotion("Scared")}>🫣</button>
-                    <button class = "emoji-button" onClick={() => setEmotion("Meh")}>🫤</button>
+                    <button class = "emoji-button" onClick={() => setEmotion("Scared")}>😨</button>
+                    <button class = "emoji-button" onClick={() => setEmotion("Meh")}>😶</button>
                     <button class = "emoji-button" onClick={() => setEmotion("Distraught")}>😭</button>
                     <button class = "emoji-button" onClick={() => setEmotion("Excited")}>🤩</button>
                     <button class = "emoji-button" onClick={() => setEmotion("Exhausted")}>💀</button>
@@ -218,11 +272,31 @@ return (
                 setOpenExtra(false);
                 setOpen(true);
             }}>Back</button>
-            <button onClick={handleSubmit}>Done</button>
+            <button style={{float: "right"}} onClick={handleSubmit}>Done</button>
             {console.log("color", color, "vibe", vibe, "journal", journal, "emotion", emotion)}
-          </div>
         </Popup>
-          </div>
+        <div className="recs">
+        <div className="recsWrapper">
+            <span className="recsDesc">
+              <br/> 
+                View your Song Reccomendation!
+            </span>
+                <br/>
+                <br/>
+                <div className="recsRight"></div>
+                <button className="songButton" onClick={getRecs}>Song of the Day!</button>
+                <div className="song">
+                <a href={currRec.url}><img src={currRec.albumArt}/></a>
+                  <br/> <br/>
+                  <span className="recsDesc">
+                  {currRec.name}
+                  <br/> <br/>
+                  {currRec.artist}
+                  <br/> <br/> <br/>
+                  </span>
+                </div>
+        </div>
+    </div>
   </div>
   )
 }
