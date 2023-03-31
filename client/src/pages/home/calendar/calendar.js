@@ -33,20 +33,29 @@ const {user} = useContext(AuthContext)
  const [emotion, setEmotion] = useState("");
  //to save text within the textbox- for journal
  const [journal, setText] = useState("");
+ //to store the retrieved data
+ const [userData, setUserData] = useState({
+  username: "",
+  date: "",
+  color: "",
+  vibe: 0,
+  journal: "",
+  emotion: ""
+ })
  
 
-const currUserData = async (clickedDate, e) => {
-  const res = await axios.get(`day/getDailyData/${user.username}/${clickedDate.toDateString}`)
+const getUserData = async (e) => {
+  console.log("DATE:", date.toDateString());
+  const res = await axios.get(`day/getDailyData/${user.username}/${date.toDateString()}`)
   const latestres = res.data[res.data.length - 1];
-  e.preventDefault();
-  const currData = {
-    color: latestres.color.hex,
-    vibe: latestres.vibe,
-    journal: latestres.journal,
-    emotion: latestres.emotion,
-  };
-  console.log(currData.vibe)
-  return currData;
+  console.log("latestres:", latestres);
+  if (typeof latestres !== 'undefined') {
+    setUserData({username: user.username, date: date.toDateString(), color: latestres.color, vibe: latestres.vibe, journal: latestres.journal, emotion: latestres.emotion});
+  }
+  else {
+    setUserData({username: user.username, date: date.toDateString(), color: "", vibe: 25, journal: "", emotion: ""});
+  }
+  return "";
 };
 
 
@@ -91,8 +100,8 @@ const handleSubmit = async (e) => {
     setOpen(true);
     setDate(clickedDate);
   } else if (clickedDate < new Date()) {
-    setOpenPast(true);
     setDate(clickedDate);
+    setOpenPast(true);
   }
 
   // set apiData with the data you want to send to the API
@@ -162,20 +171,19 @@ return (
                   onChange={(value) => {setVibe(value.target.value)}}
               />
             <p>Thought Log: </p>
-            <textarea rows="4" cols="50" value={journal} onChange={(event) => setText(event.target.value)}></textarea>
+            <textarea rows="4" cols="104" value={journal} onChange={(event) => setText(event.target.value)}></textarea>
             <div style={{ width: "100%", textAlign: "center" }}>
-                <button style={{ display: "block", marginTop: "20px" }} onClick={() => {
+                <button style={{ display: "block", marginTop: "20px", float: "right" }} onClick={() => {
                   setOpen(false);
                   setOpenExtra(true);
                 }}>Next</button>
             </div>
         </Popup>
-        <Popup open={openPast} closeOnDocumentClick onClose={() => setOpenPast(false)}  >
-         
-            
-
+        <Popup open={openPast} closeOnDocumentClick onClose={() => setOpenPast(false)} onOpen={(e) => getUserData(e)}>
           <h2>Past Date Popup: {date.toDateString()}</h2><br />
-          <p>Vibe Meter: {currUserData.vibe} </p>
+          <p>Vibe Meter: {userData.vibe} </p>
+          <p>Journal: {userData.journal} </p>
+          <p>Emotion: {userData.emotion} </p>
 
             <button onClick={() => setOpenPast(false)}>Close</button>
           
@@ -204,8 +212,8 @@ return (
                 </Row>
                 <Row>
                     <button class = "emoji-button" onClick={() => setEmotion("Loving")}>🥰</button>
-                    <button class = "emoji-button" onClick={() => setEmotion("Scared")}>🫣</button>
-                    <button class = "emoji-button" onClick={() => setEmotion("Meh")}>🫤</button>
+                    <button class = "emoji-button" onClick={() => setEmotion("Scared")}>😨</button>
+                    <button class = "emoji-button" onClick={() => setEmotion("Meh")}>😶</button>
                     <button class = "emoji-button" onClick={() => setEmotion("Distraught")}>😭</button>
                     <button class = "emoji-button" onClick={() => setEmotion("Excited")}>🤩</button>
                     <button class = "emoji-button" onClick={() => setEmotion("Exhausted")}>💀</button>
@@ -219,7 +227,7 @@ return (
                 setOpenExtra(false);
                 setOpen(true);
             }}>Back</button>
-            <button onClick={handleSubmit}>Done</button>
+            <button style={{float: "right"}} onClick={handleSubmit}>Done</button>
             {console.log("color", color, "vibe", vibe, "journal", journal, "emotion", emotion)}
         </Popup>
   </div>

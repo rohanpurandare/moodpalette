@@ -33,6 +33,8 @@ function GetDailyQuote() {
     }
     return (
         <div className="quoteDiv">
+            <br />
+            <br />
             <h1 className="quoteHeader">{quote}</h1>
             <p className="authorParagraph">- {author}</p>
         </div>
