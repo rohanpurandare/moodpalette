@@ -40,6 +40,9 @@ const UserSchema = new mongoose.Schema({
         type: Array,
         default: [],
       },
+    playlistId:{
+        type:String //PLAYLIST id: use with embedding code to display
+    },
 
 
 },

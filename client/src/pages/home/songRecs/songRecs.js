@@ -17,8 +17,8 @@ function SongRecs() {
   const { user } = useContext(AuthContext);
   console.log(user)
 
-  const {date} = useState();
-  const month = 4; //TODO change to db var
+  const {date, setDate} = useState(new Date());
+  const month = 3; //TODO change to db var
 
   const PlaylistDB = async () => {
     try {
@@ -40,12 +40,12 @@ function SongRecs() {
     }
   }
 
-
-  const SongDB = async () => {
+  const SongDB = async (e) => {
     try {
       const inp = {
         username: user.username,
-        songId: currRec.id
+        songId: currRec.id,
+        date: new Date()
       };
       await axios.post("/day/addSongID", inp).then((response) => {
         console.log(response.data);
@@ -57,9 +57,23 @@ function SongRecs() {
         // handle error response
       });
     } catch(err) {
-      console.log(err.response.data)
+      console.log("SONG DB" + err.response.data)
     }
   }
+
+  const getSongDB = async (e) => {
+    console.log("AH LATESTS");
+
+    const res = await axios.get(`/day/getSongID/${user.username}/${new Date().toDateString()}`)
+    const latestres = res.data[res.data.length - 2];
+    console.log("AH LATESTS", latestres);
+    if (typeof latestres !== 'undefined') {
+      setCurrRec({username: user.username, date: new Date().toDateString(), id: latestres.songID});
+    } else {
+      setCurrRec({username: user.username, date: new Date().toDateString(), id: ""});
+    }
+  }
+  
 
   const newPlaylist = async () => {
     const id = {
@@ -124,7 +138,7 @@ function SongRecs() {
       console.log("THIS IS MY REC:", response)
           const dateMonth = new Date().getMonth();
           if (month != dateMonth) {
-            //newPlaylist()
+            newPlaylist();
             //add playlist to db
             //month = dateMonth; //TODO change to db var
           } 
@@ -138,7 +152,6 @@ function SongRecs() {
           })
           SongDB();
           //addTrackToPlaylist()
-          //add trackto the playlist 
           try {
            // axios.put("/days/" + date._id, { url: currRec.url });
           } catch (err) {
@@ -150,6 +163,7 @@ function SongRecs() {
         console.log(error);
     });
     /*
+    
                       <iframe src={"https://open.spotify.com/embed/playlist/" + playlistID.id + "?utm_source=generator"} width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                       */
   }
@@ -163,18 +177,31 @@ function SongRecs() {
                 View your Song Reccomendation!
             </span>
                 <br/>
-                <br/>
                 <div className="recsRight"></div>
-                <button className="songButton" onClick={getRecs}>Song of the Day!</button>
-                <div className="song">
+                <div className="song" value={currRec.id} data-hide-if="">
                   <br/> <br/> <br/>
-                  <br/>
-                  <iframe className="songEmbed" src= {"https://open.spotify.com/embed/track/" + currRec.id + "?utm_source=generator"} width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-                  <br/> <br/>
+                  <br/> 
+                  <button onClick={getSongDB}>GET REC ID</button>
+                  {currRec.id == undefined ? (
+                  <div>
+                    <button className="songButton" onClick={getRecs}>Song of the Day!         
+                  
+                </button>
+                  </div>
+              ) : (
+                <div>
+                  <button className="songButton" onClick={getRecs}>Generate a New Song of the Day!         
+                  </button>
+                  <br/> <br/> <br/>
+                  <br/> 
+                  <iframe className="songEmbed" src= {"https://open.spotify.com/embed/track/" + currRec.id + "?utm_source=generator"} width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>             
+                </div>
+                  )}
 
+                  <br/> <br/>
                   <br/> <br/> <br/>
                 </div>
-        </div>J
+        </div>
     </div>
   );
 }

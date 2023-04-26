@@ -120,6 +120,7 @@ router.put("/updateCompletedHabits/:username", async (req, res) => {
               const newDay = new Day({
                   username: req.body.username,
                   songId: req.body.songId,
+                  date: req.body.date
               });
               
               const day = await newDay.save();
@@ -130,6 +131,16 @@ router.put("/updateCompletedHabits/:username", async (req, res) => {
     }
  
 });
+
+router.get("/getSongID/:username/:date", async (req, res)=>{
+  try {
+  //const user = await User.findOne({ username: req.params.username });
+  const songIdDay = await Day.find({ username: req.params.username, date: req.params.date });
+  res.status(200).json(songIdDay);
+} catch (err) {
+  res.status(500).json("error fetching SONGID");
+}
+})
   
 
  module.exports = router
