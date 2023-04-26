@@ -182,3 +182,8 @@
       transform: rotate(360deg);
     }
   }
+
+  .journalEntry {
+    word-wrap: break-word;
+    width: 400px;
+  }

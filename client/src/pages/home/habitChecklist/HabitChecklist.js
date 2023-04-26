@@ -138,9 +138,6 @@ const HabitChecklist = () => {
 
       {dbCompletedHabits && dbCompletedHabits.length > 0 && !edit && (
         <div>
-          <br></br>
-          <br></br>
-          <br></br>
           <h1 className="homeHeader">My Completed Habits</h1>
           <br></br>
 

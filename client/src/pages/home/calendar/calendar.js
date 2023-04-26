@@ -195,7 +195,7 @@ return (
         contentStyle={{ border: `10px solid ${userData.color}` }}>
           <h2>{date.toDateString()}</h2><br />
           <p>Vibe Meter: {userData.vibe} </p><br></br>
-          <p>Journal: {userData.journal} </p><br></br>
+          <p className='journalEntry'>Journal: {userData.journal} </p><br></br>
           <p>Emotion: {userData.emotion} </p><br></br>
 
             <button onClick={() => setOpenPast(false)}>Close</button>

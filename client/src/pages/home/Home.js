@@ -15,30 +15,22 @@ export default function Home() {
 
   return (
     <div className="homePage">
-      {/* <SpotifyAuth /> */} {/* TODO: figure out a better way to do this */}
-      <NavBar />
-      <br />
-      <br />
-      <div className="calendarAndChecklist">
-        <div className="rowItems">
-          <div className="calendar">
-            <Calendar />
-          </div>
-          <div className="checklist">
-            <HabitChecklist />
-          </div>
+        {/*{ <SpotifyAuth></SpotifyAuth> }*/} {/*TODO: figure out a better way to do this*/}
+        {<NavBar></NavBar>}   
+        <br></br>
+        <br></br>
+        <div className="calendarAndChecklist">
+            <div className="calendar">
+                { <Calendar></Calendar> }
+            </div>
+            <div className="checklist">
+                {<HabitChecklist></HabitChecklist> }
+            </div>
         </div>
-      </div>
-      <div className = "secondRow">
-      <div className="rowItems">
-        <div className="col">
-          <GetDailyQuote />
-        </div>
-        <div className="col">
-          <SongRecs />
-        </div>
-      </div>
-      </div>
-    </div>
+        { <GetDailyQuote></GetDailyQuote> }
+        <center>
+        { <SongRecs></SongRecs> }    
+        </center>
+    </div> 
   );
 }
