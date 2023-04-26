@@ -165,6 +165,7 @@ return (
         }}
         />
    </div>
+        {/* pop up for initial input */}
         <Popup open={open} closeOnDocumentClick onClose={() => setOpen(false)}>
             <h2>{date.toDateString()}</h2><br />
             <p>Color of the day: </p><br />
@@ -183,7 +184,7 @@ return (
                   onChange={(value) => {setVibe(value.target.value)}}
               />
             <p>Thought Log: </p>
-            <textarea rows="4" cols="104" value={journal} onChange={(event) => setText(event.target.value)}></textarea>
+            <textarea className='textArea' value={journal} onChange={(event) => setText(event.target.value)}></textarea>
             <div style={{ width: "100%", textAlign: "center" }}>
                 <button style={{ display: "block", marginTop: "20px", float: "right" }} onClick={() => {
                   setOpen(false);
@@ -191,6 +192,7 @@ return (
                 }}>Next</button>
             </div>
         </Popup>
+        {/* Pop up for receipt of entries */}
         <Popup open={openPast} closeOnDocumentClick onClose={() => setOpenPast(false)} onOpen={(e) => getUserData(e)}
         contentStyle={{ border: `10px solid ${userData.color}` }}>
           <h2>{date.toDateString()}</h2><br />
@@ -201,6 +203,7 @@ return (
             <button onClick={() => setOpenPast(false)}>Close</button>
           
         </Popup>
+        {/* Pop up for emotions */}
         <Popup open={openExtra} closeOnDocumentClick onClose={() => setOpenExtra(false)}>
           <h2>Select your mood</h2>
           <br />

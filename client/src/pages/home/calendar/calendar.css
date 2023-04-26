@@ -187,3 +187,7 @@
     word-wrap: break-word;
     width: 400px;
   }
+
+  .textArea {
+    width: 100%;
+  }
