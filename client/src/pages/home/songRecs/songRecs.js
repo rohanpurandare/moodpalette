@@ -42,7 +42,7 @@ function SongRecs() {
   
   const SongDB = async (e) => {
     try {
-      console.log("THIS IS SO DUMB",currRec.id);
+      //console.log("THIS IS SO DUMB",currRec.id);
       const inp = {
         username: user.username,
         songId: currRec.id,
@@ -115,9 +115,8 @@ function SongRecs() {
     .then((res) => {
       spotifyApi.setAccessToken(res.data.accessToken); 
       return spotifyApi.addTracksToPlaylist(playlistID.id, 
-        ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh"], 
+        [currRec.uri], 
         {"uris": [currRec.uri]})
-        
     })
     .catch((error) => {
       console.log(error);
