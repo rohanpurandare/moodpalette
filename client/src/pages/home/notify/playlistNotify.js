@@ -1,11 +1,28 @@
 import axios from "axios";
 import { AuthContext } from "../../../context/AuthContext";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import Popup from 'reactjs-popup';
 import "./notify.css"
 
 function PlaylistNotify() {
     const {user} = useContext(AuthContext);
+    const [playlistId, setPlaylistId] = useState({id: ""});
+
+    useEffect(() => {
+        async function getPlaylistId() {
+            try {
+                const currDate = new Date().toDateString()
+                const currMonth = (currDate.split(" "))[1]
+                const res = await axios.get(`/song/getPlaylistId/${user.username}/${currMonth}`);
+                if (res) {
+                    setPlaylistId({id: res.data.playlistId})
+                }
+            } catch (err) {
+              console.log(err.response.data);
+            }
+        }
+        getPlaylistId();
+      },[])
 
     const updateNotifyFlag = async () => {
         console.log("updating notify flag!")
@@ -30,7 +47,7 @@ function PlaylistNotify() {
     }
     return (
         <div>
-            <Popup open={user.monthlyNotify} modal nested onClose={updateNotifyFlag}>
+            <Popup open={user.monthlyNotify && playlistId.id !== ""} modal nested onClose={updateNotifyFlag}>
                 {close => (
                 <div className="notifyOuterContainer"> 
                     <div className="notifyInnerContainer">
@@ -39,6 +56,9 @@ function PlaylistNotify() {
                         </div>
                     </div>
                     <br></br>
+                    <div>
+                        <iframe src={"https://open.spotify.com/embed/playlist/" + playlistId.id + "?utm_source=generator"} width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                    </div>
                     <div className="notifyInnerContainer">
                         <button className="notifyYesBtn" onClick={() => {close()}}>Cool!</button>
                     </div>

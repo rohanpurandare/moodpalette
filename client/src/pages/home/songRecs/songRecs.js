@@ -3,7 +3,7 @@ import "reactjs-popup/dist/index.css";
 import axios from "axios";
 import { AuthContext } from "../../../context/AuthContext";
 import SpotifyWebApi from 'spotify-web-api-js';
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 const spotifyApi = new SpotifyWebApi();
 const MoodPaletteUserId = "31kh76sx7m4ox754hcf46zckulsy";
@@ -17,21 +17,37 @@ function SongRecs() {
 
 
   const { user } = useContext(AuthContext);
-  console.log(user)
+  //console.log(user)
 
   const {date, setDate} = useState(currDate);
   const month = 3; //TODO change to db var
+
+  useEffect(() => {
+    async function getPlaylistId() {
+        try {
+            const currDate = new Date().toDateString()
+            const currMonth = (currDate.split(" "))[1]
+            const res = await axios.get(`/song/getPlaylistId/${user.username}/${currMonth}`);
+            if (res) {
+                setPlaylistID({id: res.data.playlistId})
+            }
+        } catch (err) {
+          console.log(err.response.data);
+        }
+    }
+    getPlaylistId();
+  },[])
 
   const getSongDB = async () => {
     try {
         const res = await axios.get(
           `/song/getSongID/${user.username}/${currDate}`
           );
-        console.log("ATTEMPT " , res.data[0].songId);
+        //console.log("ATTEMPT " , res.data[0].songId);
         if (typeof res.data[0].songId !== 'undefined') {
           setCurrRec({username: user.username, date:currDate, id: res.data[0].songId});
           setPlaylistID({id: res.data[0].playlistId})
-          console.log("YESSSSS", currRec.id);
+          //console.log("YESSSSS", currRec.id);
         } else {
           //setCurrRec({username: user.username, date:currDate, id: ""});
         }
@@ -50,12 +66,12 @@ function SongRecs() {
         date: currDate,
         playlistId: playlistID.id
       };
-      console.log("PLAYLIST TEST B4", playlistID.id);
+     // console.log("PLAYLIST TEST B4", playlistID.id);
       const res = await axios.delete(`song/deleteSongHack/${user.username}/${currDate}`);
 		  //console.log(res)
       await axios.post("/song/addSongID", inp).then((response) => {
-        console.log(response.data);
-        // handle successful response
+        //console.log(response.data);
+        //handle successful response
       })
       .catch((error) => {
         //console.error(error);
@@ -63,7 +79,7 @@ function SongRecs() {
         // handle error response
       });
     } catch(err) {
-      console.log("SONG DB" + err.response.data)
+      console.log(err.response.data)
     }
   }
 
@@ -111,6 +127,7 @@ function SongRecs() {
   
   const addTrackToPlaylist = async () => {
     //SongDB();
+    console.log("ADDING", currRec.id);
     const res = await axios.get("/spotify/fetchAccessToken", {})
     .then((res) => {
       spotifyApi.setAccessToken(res.data.accessToken); 
@@ -124,12 +141,13 @@ function SongRecs() {
   }
 
   const deleteTrackFromPlaylist = async () => {
-
+    console.log("DELETING", currRec.id);
+    
     const res = await axios.get("/spotify/fetchAccessToken", {})
     .then((res) => {
       spotifyApi.setAccessToken(res.data.accessToken); 
       return spotifyApi.removeTracksFromPlaylist(playlistID.id,  
-        {"uris": [currRec.uri]})
+        [currRec.uri])
         .then((response) => {  
           console.log("THIS IS MY DELETING TRACKS RESPONSE", response)
           });
@@ -159,6 +177,10 @@ function SongRecs() {
             //add playlist to db
             //month = dateMonth; //TODO change to db var
           } 
+          if (currRec.id != undefined) {
+            //deleteTrackFromPlaylist();
+          } 
+
           setCurrRec({
             name: response.tracks[0].name,
             albumArt: response.tracks[0].album.images[0].url,
@@ -201,7 +223,6 @@ function SongRecs() {
                 <div className="song" value={currRec.id} data-hide-if="">
                   <br/> <br/> <br/>
                   <br/> 
-                  {console.log("CURRRECID" , currRec.id)}
                   {callSongDB}
                   {currRec.id == undefined ? (
                   <div>
@@ -218,6 +239,7 @@ function SongRecs() {
                   <br/> <br/>
                 </div>
                   )}
+                  
                   {playlistID.id == undefined ? (
                   <div>
                   </div>
