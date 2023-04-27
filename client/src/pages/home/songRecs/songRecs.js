@@ -122,8 +122,6 @@ function SongRecs() {
     }
   }
 
-  {callSongDB()}
-
   
   const addTrackToPlaylist = async () => {
     //SongDB();
@@ -223,7 +221,6 @@ function SongRecs() {
                 <div className="song" value={currRec.id} data-hide-if="">
                   <br/> <br/> <br/>
                   <br/> 
-                  {callSongDB}
                   {currRec.id == undefined ? (
                   <div>
                     <button className="songButton" onClick={getRecs}>Song of the Day!         
