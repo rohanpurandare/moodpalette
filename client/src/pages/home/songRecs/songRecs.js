@@ -8,7 +8,7 @@ import { useContext, useState } from "react";
 const spotifyApi = new SpotifyWebApi();
 const MoodPaletteUserId = "31kh76sx7m4ox754hcf46zckulsy";
 const currDate = new Date().toDateString();
-
+var update;
 
 function SongRecs() {
   const [currRec, setCurrRec] = useState("");
@@ -21,31 +21,6 @@ function SongRecs() {
 
   const {date, setDate} = useState(currDate);
   const month = 3; //TODO change to db var
-
-  const SongDB = async (e) => {
-    try {
-      const inp = {
-        username: user.username,
-        songId: currRec.id,
-        date: currDate,
-        playlistId: playlistID.id
-      };
-      console.log("PLAYLIST TEST B4", playlistID.id);
-      const res = await axios.delete(`song/deleteSongHack/${user.username}/${currDate}`);
-		  console.log(res)
-      await axios.post("/song/addSongID", inp).then((response) => {
-        console.log(response.data);
-        // handle successful response
-      })
-      .catch((error) => {
-        //console.error(error);
-        console.log(error);
-        // handle error response
-      });
-    } catch(err) {
-      console.log("SONG DB" + err.response.data)
-    }
-  }
 
   const getSongDB = async () => {
     try {
@@ -61,10 +36,36 @@ function SongRecs() {
           //setCurrRec({username: user.username, date:currDate, id: ""});
         }
     } catch (err) {
-      console.log(err.response.data);
+      console.log(err);
     }
   }
   
+  const SongDB = async (e) => {
+    try {
+      console.log("THIS IS SO DUMB",currRec.id);
+      const inp = {
+        username: user.username,
+        songId: currRec.id,
+        songUri: currRec.uri,
+        date: currDate,
+        playlistId: playlistID.id
+      };
+      console.log("PLAYLIST TEST B4", playlistID.id);
+      const res = await axios.delete(`song/deleteSongHack/${user.username}/${currDate}`);
+		  //console.log(res)
+      await axios.post("/song/addSongID", inp).then((response) => {
+        console.log(response.data);
+        // handle successful response
+      })
+      .catch((error) => {
+        //console.error(error);
+        console.log(error);
+        // handle error response
+      });
+    } catch(err) {
+      console.log("SONG DB" + err.response.data)
+    }
+  }
 
 
   const newPlaylist = async () => {
@@ -75,8 +76,9 @@ function SongRecs() {
     const res = await axios.get("/spotify/fetchAccessToken", {})
     .then((res) => {
       spotifyApi.setAccessToken(res.data.accessToken);
+      var playlistName = user.username + "'s Monthly Spotify Playlist"
       return spotifyApi.createPlaylist(MoodPaletteUserId, {
-        name: "TEST PLAYLIST",
+        name: playlistName,
         description:"yas",
         public:true
         })
@@ -99,6 +101,8 @@ function SongRecs() {
   const callSongDB = async () => {
     if (currRec.id == undefined) {
       getSongDB();
+    } else {
+      SongDB();
     }
   }
 
@@ -106,15 +110,29 @@ function SongRecs() {
 
   
   const addTrackToPlaylist = async () => {
-
+    //SongDB();
     const res = await axios.get("/spotify/fetchAccessToken", {})
     .then((res) => {
       spotifyApi.setAccessToken(res.data.accessToken); 
       return spotifyApi.addTracksToPlaylist(playlistID.id, 
         ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh"], 
         {"uris": [currRec.uri]})
+        
+    })
+    .catch((error) => {
+      console.log(error);
+  });
+  }
+
+  const deleteTrackFromPlaylist = async () => {
+
+    const res = await axios.get("/spotify/fetchAccessToken", {})
+    .then((res) => {
+      spotifyApi.setAccessToken(res.data.accessToken); 
+      return spotifyApi.removeTracksFromPlaylist(playlistID.id,  
+        {"uris": [currRec.uri]})
         .then((response) => {  
-          console.log("THIS IS MY ADDING TRACKS RESPONSE", response)
+          console.log("THIS IS MY DELETING TRACKS RESPONSE", response)
           });
     })
     .catch((error) => {
@@ -151,10 +169,11 @@ function SongRecs() {
             uri: response.tracks[0].uri
           })
           SongDB();
+          //getSongDB();
+          update = true;
           addTrackToPlaylist();
-          try {
-           // axios.put("/days/" + date._id, { url: currRec.url });
-          } catch (err) {
+        try {
+            } catch (err) {
             console.log(err);
           }
       });
@@ -167,6 +186,8 @@ function SongRecs() {
                       <iframe src={"https://open.spotify.com/embed/playlist/" + playlistID.id + "?utm_source=generator"} width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                       */
   }
+
+
 
   return (
     
