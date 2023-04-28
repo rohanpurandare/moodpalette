@@ -12,6 +12,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import { ChromePicker } from 'react-color'
 import axios from "axios";
+import SongRecs from "../songRecs/songRecs";
 
 
 function App() {
@@ -217,11 +218,18 @@ return (
           <p>Emotion: {userData.emotion} </p><br></br>
           
           <p>Song of the Day!:  </p><br></br>
-          <p>{currRec}</p>
-          
+          <p></p>
+          console.log({clickedDate.toDateString()});
+          console.log({new Date().toDateString()});
+          console.log({currRec});
+          { (clickedDate.toDateString() === new Date().toDateString() && (currRec == undefined)) ? (
+
+              <SongRecs></SongRecs>
+          ) : (
+           
                   <iframe className="songEmbed" src= {"https://open.spotify.com/embed/track/" + currRec + "?utm_source=generator"} width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>             
-                  
-         
+          )}     
+         <br></br>
             <button onClick={() => setOpenPast(false)}>Close</button>
           
         </Popup>

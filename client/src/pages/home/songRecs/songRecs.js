@@ -172,7 +172,7 @@ function SongRecs() {
       }).then((response) => {    
       console.log("THIS IS MY REC:", response)
           const dateMonth = new Date().getMonth();
-          if (month !== dateMonth) {
+          if (playlistID === undefined) {
             newPlaylist();
             //add playlist to db
             //month = dateMonth; //TODO change to db var
@@ -190,7 +190,8 @@ function SongRecs() {
             uri: response.tracks[0].uri
           })
           SongDB();
-          //getSongDB();
+          getSongDB();
+          //setCurrRec()
           update = true;
           addTrackToPlaylist();
         try {
@@ -221,37 +222,22 @@ function SongRecs() {
                 <br/>
                 <div className="recsRight"></div>
                 <div className="song" value={currRec.id} data-hide-if="">
-                  <br/> <br/> <br/>
+                  <br/> 
                   <br/> 
                  
-                  {currRec.id == undefined ? (
+                 { currRec === "" ? (
+                    <button className="songButton" onClick={getRecs}> Generate Song From your Input!         
+                    </button>
+                 ):(
                   <div>
-                    <button className="songButton" onClick={getRecs}>Song of the Day!         
-                </button>
-                  </div>
-              ) : (
-                <div>
-                  <button className="songButton" onClick={getRecs}>Generate a New Song of the Day!         
-                  </button>
-                  <br/> <br/> <br/>
-                  <br/> 
+                  <button className="songButton" onClick={getRecs}> Generate Song From your Input!  </button> <br/> <br/>       
+  
+                  <p>{currRec.id}</p>
                   <iframe className="songEmbed" src= {"https://open.spotify.com/embed/track/" + currRec.id + "?utm_source=generator"} width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>             
                   <br/> <br/>
-                </div>
-                  )}
-                  
-                  {playlistID.id == undefined ? (
-                  <div>
                   </div>
-              ) : (
-                <div>
-                  <iframe src={"https://open.spotify.com/embed/playlist/" + playlistID.id + "?utm_source=generator"} width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-
-                </div>
-                  )}
-
-                  <br/> <br/>
-                  <br/> <br/> <br/>
+                 )}
+        
                 </div>
         </div>
     </div>
