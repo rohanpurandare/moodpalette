@@ -60,7 +60,6 @@ function SongRecs() {
   
   const SongDB = async (e) => {
     try {
-      //console.log("THIS IS SO DUMB",currRec.id);
       const inp = {
         username: user.username,
         songId: currRec.id,
@@ -68,17 +67,11 @@ function SongRecs() {
         date: currDate,
         playlistId: playlistID.id
       };
-     // console.log("PLAYLIST TEST B4", playlistID.id);
       const res = await axios.delete(`song/deleteSongHack/${user.username}/${currDate}`);
-		  //console.log(res)
       await axios.post("/song/addSongID", inp).then((response) => {
-        //console.log(response.data);
-        //handle successful response
       })
       .catch((error) => {
-        //console.error(error);
         console.log(error);
-        // handle error response
       });
     } catch(err) {
       console.log(err.response.data)
@@ -191,6 +184,7 @@ function SongRecs() {
           })
           SongDB();
           getSongDB();
+          setTimeout(5000);
           //setCurrRec()
           update = true;
           addTrackToPlaylist();
@@ -232,7 +226,7 @@ function SongRecs() {
                   <div>
                   <button className="songButton" onClick={getRecs}> Generate Song From your Input!  </button> <br/> <br/>       
   
-                  <p>{currRec.id}</p>
+                  <p>{() => {setTimeout(5000)}}</p>
                   <iframe className="songEmbed" src= {"https://open.spotify.com/embed/track/" + currRec.id + "?utm_source=generator"} width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>             
                   <br/> <br/>
                   </div>

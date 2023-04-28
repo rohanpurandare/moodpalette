@@ -219,10 +219,7 @@ return (
           
           <p>Song of the Day!:  </p><br></br>
           <p></p>
-          console.log({clickedDate.toDateString()});
-          console.log({new Date().toDateString()});
-          console.log({currRec});
-          { (clickedDate.toDateString() === new Date().toDateString() && (currRec == undefined)) ? (
+          { (clickedDate.toDateString() === new Date().toDateString()) ? (
 
               <SongRecs></SongRecs>
           ) : (
