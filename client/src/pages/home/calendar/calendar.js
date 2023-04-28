@@ -314,10 +314,7 @@ return (
                   <iframe className="songEmbed" src= {"https://open.spotify.com/embed/track/" + currRec + "?utm_source=generator"} width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>             
           )}     
          <br></br>
-          <p>Song of the Day!:  </p><br></br>
-          <p>{currRec}</p>
           
-                  <iframe className="songEmbed" src= {"https://open.spotify.com/embed/track/" + currRec + "?utm_source=generator"} width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>             
                   
          
          
