@@ -52,7 +52,7 @@ const LinksWrapper = styled.ul`
   display: flex;
   height: 100%;
   list-style: none;
-  background-color: #fff;
+  background-color: ;
   width: 100%;
   flex-direction: column;
   top: 65px;

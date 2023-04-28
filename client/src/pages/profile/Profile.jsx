@@ -126,12 +126,12 @@ export default function Profile() {
   };
 
   let editButton = (
-    <button variant="contained" className="purpleBtnEdit">
+    <button variant="contained" className="greenBtnEdit">
       Edit Profile
     </button>
   );
   let deleteButton = (
-    <button variant="contained" className="greenBtnChoose">
+    <button variant="contained" className="redBtnChoose">
       {" "}
       Delete Profile
     </button>
@@ -145,7 +145,7 @@ export default function Profile() {
   let deleteFinal = (
     <button
       variant="contained"
-      className="blueBtnFinal"
+      className="redBtnFinal"
       onClick={handleDelete}
     >
       {" "}
@@ -183,6 +183,7 @@ export default function Profile() {
   return (
     <>
       {<NavBar></NavBar>}
+      <h2 className="homeHeader">{user.username}'s Profile Page!!</h2>
       <div className="entirePage">
         <div className="entireProfile">
           <img
@@ -218,11 +219,11 @@ export default function Profile() {
                           ref={age}
                           className="registerInput"
                         />
-                        <button className="registerButton" type="submit">
+                        <button className="updateInfoBtn" type="submit">
                           Update Info
                         </button>
                         <button
-                          className="loginRegisterButton"
+                          className="greyBtnCancel2"
                           onClick={() => close()}
                         >
                           Cancel
@@ -252,7 +253,7 @@ export default function Profile() {
                       {deleteFinal}{" "}
                       <button
                         variant="contained"
-                        className="greenBtnCancel"
+                        className="greyBtnCancel"
                         onClick={() => close()}
                       >
                         Cancel
@@ -273,7 +274,7 @@ export default function Profile() {
                         <br/>
                         <center><button
                           variant="contained"
-                          className="greenBtnCancel"
+                          className="greyBtnCancel"
                           onClick={() => close()}
                         >
                           Close
@@ -317,6 +318,7 @@ export default function Profile() {
             </div>
         </div>
         </div>
+        {/* <div className="entireProfile"></div> */}
         <div className="helpButton" onMouseOver={displayHelp} onMouseOut={displayQuestion}>{helpText}</div>
     </>
     

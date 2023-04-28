@@ -146,8 +146,9 @@ const HabitTracker = () => {
 
     await axios.post("/users/deleteHabit", deleteHabit);
 
-    const concatHabit = popupPriority + popupFreq + popupHabit;
-    console.log(concatHabit);
+    
+    const concatHabit = priority1.current.value + frequency1.current.value + popupHabit;
+    console.log("concatHabit", concatHabit);
 
     const addHabit = {
       username: user.username,
@@ -228,7 +229,8 @@ const HabitTracker = () => {
                   new Date().toDateString().split(" ")[0]) && (
                 <div>
                   <h3 style={{ color: "red" }}>
-                    {index + 1} . {habit.substring(4)}
+                    {/* {index + 1} . {habit.substring(4)} */}
+                    {habit.substring(4)} 
                   </h3>
                   <button
                     className="deleteButton"
@@ -250,7 +252,8 @@ const HabitTracker = () => {
                   new Date().toDateString().split(" ")[0]) && (
                 <div>
                   <h3 style={{ color: "#D29E1E" }}>
-                    {index + 1} . {habit.substring(4)}
+                    {/* {index + 1} . {habit.substring(4)} */}
+                    {habit.substring(4)} 
                   </h3>
                   <button
                     className="deleteButton"
@@ -270,6 +273,7 @@ const HabitTracker = () => {
                     onClose={() => setOpen(false)}
                     contentStyle={{ border: `5px solid black` }}
                   >
+                    <div className="popupFormatting">
                     <form className="updateHabit" onSubmit={updateHabitPopup}>
                       <input
                         value={popupHabit}
@@ -277,25 +281,25 @@ const HabitTracker = () => {
                         ref={habit1}
                         onChange={(e) => setPopupHabit(e.target.value)}
                       />
-                      <div className="priorityLevel">
+                      <div className="priorityLevelP">
                         <label for="priority">Choose a priority level: </label>
 
                         <select name="priority" id="levels" ref={priority1}>
                           <optgroup label="-- Priority Level --">
                             <option value="1" selected={popupPriority === "1"}>
-                              High
+                              High (Red)
                             </option>
                             <option value="2" selected={popupPriority === "2"}>
-                              Medium
+                              Medium (Yellow)
                             </option>
                             <option value="3" selected={popupPriority === "3"}>
-                              Low
+                              Low (Green)
                             </option>
                           </optgroup>
                         </select>
                       </div>
 
-                      <div className="frequencyLevel">
+                      <div className="frequencyLevelP">
                         <label for="priority">
                           Choose a frequency for your habit:{" "}
                         </label>
@@ -315,7 +319,7 @@ const HabitTracker = () => {
                       </div>
 
                       <button
-                        className="addHabitButton"
+                        className="addHabitButtonP"
                         type="submit"
                         // disabled={allHabits.length >= 10}
                       >
@@ -323,10 +327,8 @@ const HabitTracker = () => {
                       </button>
 
                       <p id="HabitErrorPopup">{errorHandling}</p>
-
-                      <br></br>
-                      <br></br>
                     </form>
+                    </div>
                   </Popup>
                 </div>
               )}
@@ -336,7 +338,8 @@ const HabitTracker = () => {
                   new Date().toDateString().split(" ")[0]) && (
                 <div>
                   <h3 style={{ color: "green" }}>
-                    {index + 1} . {habit.substring(4)}
+                    {/* {index + 1} . {habit.substring(4)} */}
+                    {habit.substring(4)} 
                   </h3>
 
                   <button
@@ -402,10 +405,8 @@ const HabitTracker = () => {
 
         <p id="HabitError">{errorHandling}</p>
 
-        <br></br>
-        <br></br>
       </form>
-      <div id="HabitError"></div>
+      {/* <div id="HabitError"></div> */}
       <div
         className="helpButton"
         onMouseOver={displayHelp}

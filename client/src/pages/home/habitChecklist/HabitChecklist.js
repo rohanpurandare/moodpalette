@@ -61,8 +61,13 @@ const HabitChecklist = () => {
     let completedHabits = [];
     var index = 0;
     let checkboxes = document.querySelectorAll("input[type='checkbox']");
+   
+    console.log("completedHabits:", completedHabits[index])
+
     for (let i = 0; i < checkboxes.length; i++) {
+      
       if (checkboxes[i].checked) {
+        console.log("just i ", i)
         completedHabits[index] = habits[i];
         index++;
       }
@@ -156,10 +161,12 @@ const HabitChecklist = () => {
           <form>
             <div className="habits">
               {habits.map((habit) => (
-                <div className="habit" key={habit}>
+                (habit.substring(1, 4) === "Day" ||
+                habit.substring(1, 4) ===
+                  new Date().toDateString().split(" ")[0]) && (<div className="habit" key={habit}>
                   <input type="checkbox" defaultChecked={dbCompletedHabits.includes(habit)}/>
                   <label>{habit.substring(4)}</label>
-                </div>
+                </div>)
               ))}
             
             </div>
@@ -185,7 +192,7 @@ const HabitChecklist = () => {
       {dbCompletedHabits && dbCompletedHabits.length > 0 && !edit && (
         <div>
           
-          <h1 className="homeHeader">My Completed Habits</h1>
+          <h1 className="homeHeader">Habits Remaining</h1>
           <br></br>
 
           <div className="habits">
@@ -193,6 +200,9 @@ const HabitChecklist = () => {
 
       <ul>
       {habits.map((habit) => (
+        (habit.substring(1, 4) === "Day" ||
+        habit.substring(1, 4) ===
+          new Date().toDateString().split(" ")[0]) &&
         <li
           key={habit.id}
           style={dbCompletedHabits.includes(habit) ? { textDecoration: 'line-through' ,fontSize:20 } : {fontSize:20}}

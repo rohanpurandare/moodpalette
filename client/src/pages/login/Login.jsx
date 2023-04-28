@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { CircularProgress } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 export default function Login() {
   //*Note: we could also use state but since this refreshes with each letter,, better to use reference
@@ -125,22 +126,22 @@ export default function Login() {
               ref={password}
               onBlur={validatePassword}/>
             <div id="passError" style={{ color: "red" }}></div>
-           {/*
+           
             <div className="input-group-btn">
-              Show/Hide password&nbsp;&nbsp;&nbsp;
               <button
                 className="btn btn-outline-primary"
                 onClick={togglePassword}
               >
                 {passwordType === "password" ? (
-                  <i className="bi bi-eye-slash"></i>
+                  <span class="material-icons">Show Password</span>
+
                 ) : (
-                  <i className="bi bi-eye"></i>
+                  <span class="material-icons">Hide Password</span>
                 )}
               </button>
             </div>
 
-                */}
+               
             {/* PASSWORD AND VISIBILITY ABOVE */}
 
             <button className="loginButton" type="submit" disabled={isFetching}>

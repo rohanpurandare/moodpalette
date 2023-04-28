@@ -11,7 +11,7 @@
 	object-fit: cover;
     /*flex: auto;*/
     margin-top: 10px;
-	border: 3px solid antiquewhite;
+	border: 3px solid mediumpurple;
 }
 
 .profileInfoName {
@@ -37,19 +37,7 @@
 }
 
 
-.purpleBtnEdit {
-    height: 50px;
-    border-radius: 10px;
-    border: none;
-    background-color: mediumpurple;
-    color: white;
-    font-size: 20px;
-    font-weight: 500;
-    cursor: pointer;
-    margin:10px;
-}
-
-.greenBtnCancel {
+.greenBtnEdit {
     height: 50px;
     border-radius: 10px;
     border: none;
@@ -58,25 +46,37 @@
     font-size: 20px;
     font-weight: 500;
     cursor: pointer;
-
+    margin: 10px;
 }
 
-.blueBtnFinal{
+.greyBtnCancel {
     height: 50px;
     border-radius: 10px;
     border: none;
-    background-color: cornflowerblue;
+    background-color:darkgray;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+
+}
+
+.redBtnFinal{
+    height: 50px;
+    border-radius: 10px;
+    border: none;
+    background-color: indianred;
     color: white;
     font-size: 20px;
     font-weight: 500;
     cursor: pointer;
 }
 
-.greenBtnChoose{
+.redBtnChoose{
     height: 50px;
     border-radius: 10px;
     border: none;
-    background-color: darkseagreen;
+    background-color: indianred;
     color: white;
     font-size: 20px;
     font-weight: 500;
@@ -93,7 +93,7 @@
     width:1000px;
     height: 400px;
     margin-left: 10%;
-    margin-top:8%
+    margin-top:3%
 }
 
 .email 
@@ -104,7 +104,7 @@
     align-items: center;
     justify-content: center;
     margin-left: 2%;
-    margin-top: 8%;
+    margin-top: 3%;
 }
 
   
@@ -178,4 +178,35 @@
 .from_email:focus,
 .from_name:focus{
     outline: none;
+}
+
+.homeHeader{
+    text-align: center;
+    margin: 1%;
+}
+
+.greyBtnCancel2 {
+    height: 50px;
+    border-radius: 10px;
+    border: none;
+    background-color:darkgray;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    width: 60%;
+    align-self: center;
+
+}
+
+.updateInfoBtn{
+    height: 50px;
+    border-radius: 10px;
+    border: none;
+    background-color: darkseagreen;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 10px;
 }
