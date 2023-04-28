@@ -1,6 +1,6 @@
 import "./profile.css";
 import { AuthContext } from "../../context/AuthContext";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import NavBar from "../navbar/index";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
@@ -48,6 +48,8 @@ export default function Profile() {
 
   const [currRec, setCurrRec] = useState("");
   const [helpText, setHelpText] = useState("?");
+  const [playlistID, setPlaylistID] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState("January"); 
 
   const displayHelp = () => {
     setHelpText("Welcome to your profile page! Feel free to edit your profile information on the left. On the right, input a time at which you'd like to be reminded to enter your daily data!")
@@ -76,6 +78,9 @@ export default function Profile() {
   const age = useRef();
 
   const navigate = useNavigate();
+
+  const currDate = new Date().toDateString();
+  const month = 3; //TODO change to db var
 
   const handleEdit = async (e) => {
     e.preventDefault();
@@ -179,6 +184,48 @@ export default function Profile() {
 
   const outfits = [partyprimary, partysecondary, crownprimary, crownsecondary, cowboyprimary, cowboysecondary, fancyprimary, fancysecondary, employeeprimary, employeesecondary, chefprimary, chefsecondary, sportsprimary, sportssecondary, ninjaprimary, ninjasecondary, popstarprimary, popstarsecondary, discoprimary, discosecondary, cow]
   const mooPalImg = outfits[user.mooPalOutfit]
+
+  useEffect(() => {
+    async function getPlaylistId() {
+      try {
+        const monthString = selectedMonth;
+        console.log("monthString",monthString);
+        //const res = await axios.get(`/song/getPlaylistId/${user.username}/s${monthString}`);
+        
+        const currDate = new Date().toDateString()
+        const currMonth = (currDate.split(" "))[1]
+        const res = await axios.get(`/song/getPlaylistId/${user.username}/${currMonth}`);
+        console.log("currMonth",currMonth);
+
+        if (res) {
+          setPlaylistID({id: res.data.playlistId});
+        }
+      } catch (err) {
+        console.log("boooo");
+      }
+    }
+    getPlaylistId();
+  }, [selectedMonth]);
+
+  const handleMonthChange = (e) => {
+    const selectedLabel = e.target.options[e.target.selectedIndex].text;
+    setSelectedMonth(selectedLabel);
+  };
+
+  const monthOptions = [
+    { value: 1, label: "Jan" },
+    { value: 2, label: "Feb" },
+    { value: 3, label: "Mar" },
+    { value: 4, label: "Apr" },
+    { value: 5, label: "May" },
+    { value: 6, label: "Jun" },
+    { value: 7, label: "Jul" },
+    { value: 8, label: "Aug" },
+    { value: 9, label: "Sep" },
+    { value: 10, label: "Oct" },
+    { value: 11, label: "Nov" },
+    { value: 12, label: "Dec" },
+  ];
 
   return (
     <>
@@ -318,6 +365,42 @@ export default function Profile() {
             </div>
         </div>
         </div>
+
+        <br /><br /><br />
+      <br /><br /><br />
+      <center>
+        <h2>View your past playlists!</h2>
+        <br />
+        <select value={selectedMonth} onChange={handleMonthChange}>
+          {monthOptions.map((option) => (
+            <option key={option.value} value={option.label}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+        <br />
+        <br />
+            {playlistID.id ? (
+                      <iframe
+                      key={playlistID.id}
+                      src={"https://open.spotify.com/embed/playlist/" + playlistID.id + "?utm_source=generator"}
+                      width="75%"
+                      height="352"
+                      frameBorder="0"
+                      allowFullScreen=""
+                      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                      loading="lazy"
+                    ></iframe>
+            ) : (
+              <div>No entries made for this month. 
+                Playlist not available.
+                </div>
+            )}
+      </center>
+      <br /><br /><br />
+      <br /><br /><br />
+      <br /><br /><br />
+     
         {/* <div className="entireProfile"></div> */}
         <div className="helpButton" onMouseOver={displayHelp} onMouseOut={displayQuestion}>{helpText}</div>
     </>
