@@ -172,7 +172,7 @@ function SongRecs() {
       }).then((response) => {    
       console.log("THIS IS MY REC:", response)
           const dateMonth = new Date().getMonth();
-          if (month != dateMonth) {
+          if (month !== dateMonth) {
             newPlaylist();
             //add playlist to db
             //month = dateMonth; //TODO change to db var

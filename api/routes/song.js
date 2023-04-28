@@ -23,12 +23,22 @@ router.post("/addSongID", async (req, res) => {
 
 router.get("/getSongID/:username/:date", async (req, res)=>{
     try {
-		const song = await Song.find({ username: req.params.username, date: req.params.date });
+		const song = await Song.findOne({ username: req.params.username, date: req.params.date });
         console.log("SONG"+ song.songId);
 		res.status(200).json(song);
 	} catch (err) {
 		res.status(500).json("error fetching songid");
 	}
+})
+
+router.get("/getSongIDOne/:username/:date", async (req, res)=>{
+  try {
+  const song = await Song.findOne({ username: req.params.username, date: req.params.date });
+      console.log("SONG"+ song.songId);
+  res.status(200).json(song);
+} catch (err) {
+  res.status(500).json("error fetching songid");
+}
 })
 
 router.get("/getPlaylistId/:username/:month", async (req, res)=>{

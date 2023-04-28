@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Calendar from 'react-calendar'; 
 import 'react-calendar/dist/Calendar.css'
 import React from 'react';
@@ -33,6 +33,7 @@ const {user} = useContext(AuthContext)
  const [emotion, setEmotion] = useState("");
  //to save text within the textbox- for journal
  const [journal, setText] = useState("");
+ const [clickedDate, setClickedDate] = useState(new Date());
  //to store the retrieved data
  const [userData, setUserData] = useState({
   username: "",
@@ -45,8 +46,13 @@ const {user} = useContext(AuthContext)
  
 
 const getUserData = async (e) => {
+
   console.log("DATE:", date.toDateString());
   const res = await axios.get(`day/getDailyData/${user.username}/${date.toDateString()}`)
+  const song = await axios.get(`/song/getSongID/${user.username}/${clickedDate.toDateString()}`);
+  console.log("song res", song);
+  setCurrRec(song.data.songId);
+  console.log("is this printing songid?" , currRec);
   console.log("inside getUserData");
   let latestres = 'undefined';
   let foundData = false
@@ -108,6 +114,9 @@ const handleSubmit = async (e) => {
 
  //to specify popups
  const handleDateClick = (clickedDate) => {
+  setClickedDate(clickedDate);
+  console.log("Clicked Date", clickedDate)
+  getUserData();
   if (clickedDate.toDateString() === new Date().toDateString()) {
     setOpen(true);
     setDate(clickedDate);
@@ -115,16 +124,6 @@ const handleSubmit = async (e) => {
     setDate(clickedDate);
     setOpenPast(true);
   }
-
-  // set apiData with the data you want to send to the API
-  // setApiData({
-  //   username: user.username,
-  //   date: clickedDate.toDateString(),
-  //   color: color.hex,
-  //   vibe: vibe,
-  //   journal: journal,
-  //   emotion: emotion,
-  // });
 };
 
 const marks = [
@@ -136,6 +135,25 @@ const marks = [
   { value: 50, label: '50' },
   { value: 100, label: '100' },
 ];
+
+const [currRec, setCurrRec] = useState("");
+
+/*
+useEffect(() => {
+  async function getSongID() {
+      try {
+        const currDate = new Date().toDateString()
+          const res = await axios.get(`/song/getSongID/${user.username}/${currDate}`);
+          if (res) {
+            console.log("CURRDATE", res.data.getSongID);
+            setCurrRec({id: res.data.getSongID})
+          }
+      } catch (err) {
+        console.log(err.response.data);
+      }
+  }
+  getSongID();
+},[])*/
 
 return (
  <div className="app">
@@ -197,7 +215,13 @@ return (
           <p>Vibe Meter: {userData.vibe} </p><br></br>
           <p>Journal: {userData.journal} </p><br></br>
           <p>Emotion: {userData.emotion} </p><br></br>
-
+          
+          <p>Song of the Day!:  </p><br></br>
+          <p>{currRec}</p>
+          
+                  <iframe className="songEmbed" src= {"https://open.spotify.com/embed/track/" + currRec + "?utm_source=generator"} width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>             
+                  
+         
             <button onClick={() => setOpenPast(false)}>Close</button>
           
         </Popup>
