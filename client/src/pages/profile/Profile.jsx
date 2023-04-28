@@ -1,6 +1,6 @@
 import "./profile.css";
 import { AuthContext } from "../../context/AuthContext";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect  } from "react";
 import NavBar from "../navbar/index";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
@@ -44,12 +44,70 @@ const notify = () => {
   toast("Make sure to fill out your Mood Palette for the day!");
 }
 
+
 export default function Profile() {
+
+  //FOR PLAYLIST 
+  const [playlistID, setPlaylistID] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState("January"); 
+  const { user, dispatch } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const currDate = new Date().toDateString();
+  const month = 3; //TODO change to db var
+
+  useEffect(() => {
+    async function getPlaylistId() {
+      try {
+        setPlaylistID({id: null})
+
+        const monthString = selectedMonth;
+        console.log("monthString",monthString);
+        const res = await axios.get(`/song/getPlaylistId/${user.username}/${monthString}`);
+        
+        //const currDate = new Date().toDateString()
+        //const currMonth = (currDate.split(" "))[1]
+        //const res = await axios.get(`/song/getPlaylistId/${user.username}/${currMonth}`);
+        //console.log("currMonth",currMonth);
+
+        if (res) {
+          setPlaylistID({id: res.data.playlistId});
+        }
+      } catch (err) {
+        console.log("boooo");
+      }
+    }
+    getPlaylistId();
+  }, [selectedMonth]);
+
+  const handleMonthChange = (e) => {
+    const selectedLabel = e.target.options[e.target.selectedIndex].text;
+    console.log(e.target.value,selectedLabel)
+    setSelectedMonth(selectedLabel);
+  };
+
+  const monthOptions = [
+    { value: 1, label: "Jan" },
+    { value: 2, label: "Feb" },
+    { value: 3, label: "Mar" },
+    { value: 4, label: "Apr" },
+    { value: 5, label: "May" },
+    { value: 6, label: "Jun" },
+    { value: 7, label: "Jul" },
+    { value: 8, label: "Aug" },
+    { value: 9, label: "Sep" },
+    { value: 10, label: "Oct" },
+    { value: 11, label: "Nov" },
+    { value: 12, label: "Dec" },
+  ];
+
+
+
+
+  ////////
 
   const [currRec, setCurrRec] = useState("");
   const [helpText, setHelpText] = useState("?");
-  const [playlistID, setPlaylistID] = useState("");
-  const [selectedMonth, setSelectedMonth] = useState("January"); 
 
   const displayHelp = () => {
     setHelpText("Welcome to your profile page! Feel free to edit your profile information on the left. On the right, input a time at which you'd like to be reminded to enter your daily data!")
@@ -70,17 +128,13 @@ export default function Profile() {
           });
       }
 
-  const { user, dispatch } = useContext(AuthContext);
   console.log(user)
 
   const username = useRef();
   const email = useRef();
   const age = useRef();
 
-  const navigate = useNavigate();
-
-  const currDate = new Date().toDateString();
-  const month = 3; //TODO change to db var
+ 
 
   const handleEdit = async (e) => {
     e.preventDefault();
@@ -131,12 +185,12 @@ export default function Profile() {
   };
 
   let editButton = (
-    <button variant="contained" className="greenBtnEdit">
+    <button variant="contained" className="purpleBtnEdit">
       Edit Profile
     </button>
   );
   let deleteButton = (
-    <button variant="contained" className="redBtnChoose">
+    <button variant="contained" className="greenBtnChoose">
       {" "}
       Delete Profile
     </button>
@@ -150,7 +204,7 @@ export default function Profile() {
   let deleteFinal = (
     <button
       variant="contained"
-      className="redBtnFinal"
+      className="blueBtnFinal"
       onClick={handleDelete}
     >
       {" "}
@@ -185,52 +239,9 @@ export default function Profile() {
   const outfits = [partyprimary, partysecondary, crownprimary, crownsecondary, cowboyprimary, cowboysecondary, fancyprimary, fancysecondary, employeeprimary, employeesecondary, chefprimary, chefsecondary, sportsprimary, sportssecondary, ninjaprimary, ninjasecondary, popstarprimary, popstarsecondary, discoprimary, discosecondary, cow]
   const mooPalImg = outfits[user.mooPalOutfit]
 
-  useEffect(() => {
-    async function getPlaylistId() {
-      try {
-        const monthString = selectedMonth;
-        console.log("monthString",monthString);
-        //const res = await axios.get(`/song/getPlaylistId/${user.username}/s${monthString}`);
-        
-        const currDate = new Date().toDateString()
-        const currMonth = (currDate.split(" "))[1]
-        const res = await axios.get(`/song/getPlaylistId/${user.username}/${currMonth}`);
-        console.log("currMonth",currMonth);
-
-        if (res) {
-          setPlaylistID({id: res.data.playlistId});
-        }
-      } catch (err) {
-        console.log("boooo");
-      }
-    }
-    getPlaylistId();
-  }, [selectedMonth]);
-
-  const handleMonthChange = (e) => {
-    const selectedLabel = e.target.options[e.target.selectedIndex].text;
-    setSelectedMonth(selectedLabel);
-  };
-
-  const monthOptions = [
-    { value: 1, label: "Jan" },
-    { value: 2, label: "Feb" },
-    { value: 3, label: "Mar" },
-    { value: 4, label: "Apr" },
-    { value: 5, label: "May" },
-    { value: 6, label: "Jun" },
-    { value: 7, label: "Jul" },
-    { value: 8, label: "Aug" },
-    { value: 9, label: "Sep" },
-    { value: 10, label: "Oct" },
-    { value: 11, label: "Nov" },
-    { value: 12, label: "Dec" },
-  ];
-
   return (
     <>
       {<NavBar></NavBar>}
-      <h2 className="homeHeader">{user.username}'s Profile Page!!</h2>
       <div className="entirePage">
         <div className="entireProfile">
           <img
@@ -266,11 +277,11 @@ export default function Profile() {
                           ref={age}
                           className="registerInput"
                         />
-                        <button className="updateInfoBtn" type="submit">
+                        <button className="registerButton" type="submit">
                           Update Info
                         </button>
                         <button
-                          className="greyBtnCancel2"
+                          className="loginRegisterButton"
                           onClick={() => close()}
                         >
                           Cancel
@@ -300,7 +311,7 @@ export default function Profile() {
                       {deleteFinal}{" "}
                       <button
                         variant="contained"
-                        className="greyBtnCancel"
+                        className="greenBtnCancel"
                         onClick={() => close()}
                       >
                         Cancel
@@ -321,7 +332,7 @@ export default function Profile() {
                         <br/>
                         <center><button
                           variant="contained"
-                          className="greyBtnCancel"
+                          className="greenBtnCancel"
                           onClick={() => close()}
                         >
                           Close
@@ -365,9 +376,10 @@ export default function Profile() {
             </div>
         </div>
         </div>
-
         <br /><br /><br />
       <br /><br /><br />
+      <br />
+      <br />
       <center>
         <h2>View your past playlists!</h2>
         <br />
@@ -397,11 +409,14 @@ export default function Profile() {
                 </div>
             )}
       </center>
+      <br />
+      <br />
+
       <br /><br /><br />
       <br /><br /><br />
       <br /><br /><br />
-     
-        {/* <div className="entireProfile"></div> */}
+      <br /><br /><br />
+        
         <div className="helpButton" onMouseOver={displayHelp} onMouseOut={displayQuestion}>{helpText}</div>
     </>
     
